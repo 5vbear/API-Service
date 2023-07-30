@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.orainge.tools.apiservice</groupId>
             <artifactId>api-service-utils</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

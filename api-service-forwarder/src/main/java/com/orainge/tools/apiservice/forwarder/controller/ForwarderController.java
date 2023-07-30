@@ -36,6 +36,18 @@ public class ForwarderController {
         return forwarderService.exchange(response, header, body);
     }
 
+    @PostMapping("/luggage/transInfo")
+    public @ResponseBody
+    Result queryLuggageInfo(HttpServletResponse response,
+                    @RequestHeader(required = false) MultiValueMap<String, String> header,
+                    @RequestBody(required = false) String body) {
+        if (StringUtils.isEmpty(body)) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+        return forwarderService.exchange(response, header, body);
+    }
+
     /**
      * 只允许 POST 方式进行数据交换，其它方式统一返回成 404
      */

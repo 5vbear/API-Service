@@ -105,4 +105,59 @@ public class ForwarderServiceImpl implements ForwarderService {
             return NodeResultStatus.SUCCESS.toResult().setData(result);
         }
     }
+
+    public Result queryLuggageTransInfo(HttpServletResponse response, MultiValueMap<String, String> header, String body) {
+//        if (!forwarderConfig.isEnable()) {
+//            // 如果该转发端未启用，则返回 404
+//            response.setStatus(HttpStatus.NOT_FOUND.value());
+//            return null;
+//        }
+//
+//        // 判断请求是否为授权的请求
+//        NodeCredentials credentials = nodeAuthenticationUtil.getCredentials(header);
+//        if (credentials == null) {
+//            return NodeResultStatus.NOT_AUTHORIZED_NOTE.toResult();
+//        }
+//
+//        // 准备密钥
+//        String encryptKey = nodeAuthenticationUtil.getEncryptionKey(credentials);
+//
+//        // 解密请求体
+//        body = encryptionUtil.decrypt(body, encryptKey);
+//        if (body == null) {
+//            return NodeResultStatus.INCORRECT_REQUEST.toResult();
+//        }
+
+        NodeMessage message;
+        try {
+            message = jsonUtil.parseObject(body, NodeMessage.class);
+            if (message == null) {
+                throw new NullPointerException("message");
+            }
+        } catch (Exception e) {
+            log.error("[API 转发端] - 转发请求体不合法", e);
+            return NodeResultStatus.INCORRECT_REQUEST.toResult();
+        }
+
+        if (showLog) {
+            log.info("[API 转发端] - 收到转发请求[{}]: {}",  jsonUtil.toJSONString(message));
+        }
+
+        // 转发请求
+        ResponseEntity<byte[]> forwardResult = forwarderClient.forward(message);
+        if (forwardResult == null) {
+            log.error("[API 转发端] - 请求错误: 转发请求结果为空");
+            return NodeResultStatus.REVERSE_PROXY_ERROR.toResult();
+        }
+
+        // 将转发结果加密
+        String result = jsonUtil.toJSONString(forwardResult);//encryptionUtil.encrypt(jsonUtil.toJSONString(forwardResult), encryptKey);
+
+        if (result == null) {
+            log.error("[API 转发端] - 请求错误: 加密请求结果失败");
+            return NodeResultStatus.REVERSE_PROXY_ERROR.toResult();
+        } else {
+            return NodeResultStatus.SUCCESS.toResult().setData(result);
+        }
+    }
 }

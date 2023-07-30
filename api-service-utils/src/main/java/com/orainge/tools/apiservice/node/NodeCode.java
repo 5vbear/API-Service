@@ -10,10 +10,10 @@ public class NodeCode {
     /**
      * 节点 ID 标识
      */
-    public static final String NODE_ID_HEADER_NAME = "Transfer-Node-Id";
+    public static final String NODE_ID_HEADER_NAME = "transfer-node-id";
 
     /**
      * 动态验证码标识
      */
-    public static final String NODE_KEY_HEADER_NAME = "Transfer-Node-Key";
+    public static final String NODE_KEY_HEADER_NAME = "transfer-node-key";
 }

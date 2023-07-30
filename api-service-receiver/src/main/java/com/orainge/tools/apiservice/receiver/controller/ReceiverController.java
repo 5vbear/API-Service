@@ -20,7 +20,7 @@ public class ReceiverController {
     @Resource
     private ReceiverService receiverService;
 
-    @RequestMapping("/**")
+    @RequestMapping("/luggage/trans/info")
     public void forward(HttpServletRequest request,
                         HttpServletResponse response,
                         @RequestParam(required = false) Map<String, String> requestParam) {

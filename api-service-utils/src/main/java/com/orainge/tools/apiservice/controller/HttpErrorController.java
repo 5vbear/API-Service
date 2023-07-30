@@ -39,7 +39,7 @@ public class HttpErrorController implements ErrorController {
                 .setMessage(HttpStatus.valueOf(statusCode).getReasonPhrase());
     }
 
-    @Override
+//    @Override
     public String getErrorPath() {
         return errorPath;
     }
